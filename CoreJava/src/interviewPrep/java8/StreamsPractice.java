@@ -1,10 +1,8 @@
 package interviewPrep.java8;
 
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class StreamsPractice {
     public static void main(String[] args) {
@@ -55,5 +53,45 @@ public class StreamsPractice {
         System.out.println("Second largest number " + secondLargest);
         System.out.println("Second smallest number " + secondSmallest);
 
+//        Find the first element of a Stream in Java
+        List<String> names = Arrays.asList("Dinesh","D","Mithun");
+        System.out.println(names.stream().findFirst());
+        System.out.println(names.stream().findFirst());
+
+//        Find duplicate elements in a Stream in Java
+        List<Integer> numbersList = Arrays.asList(5, 13, 4, 21, 13, 27, 2, 59, 59, 34);
+    // USING SET
+        // Set to hold the unique elements
+        Set<Integer> uniqueNumbers = new HashSet<>();
+        // .add() will return false if the element is already present in the set
+        List<Integer> duplicates = numbersList.stream().filter(x->!uniqueNumbers.add(x)).collect(Collectors.toList());
+        System.out.println("Unique Numbers::"+uniqueNumbers);
+        System.out.println("Duplicate Numbers::"+duplicates);
+    //  USING COLLECTIONS.FREQUENCY
+        List<Integer> duplicateFreq = numbersList.stream().filter(x ->
+                // Check the frequency of each element in stream
+                Collections.frequency(numbersList,x)>1).toList();
+        System.out.println("Duplicate Numbers = " + Arrays.toString(args));
+
+//        Count occurrence of a given character in a string using Stream API in Java
+        String name= "harshath Shanthilal Mehta";
+        // The Java Stream API is designed for collections and doesn't have a direct .streams() method for String. However, the .chars() method effectively serves a similar purpose for Strings by returning an IntStream.
+        long countOfH = name.chars().filter(x -> x=='h').count();
+        System.out.println("Count of h " + countOfH);
+
+//      Program to convert a Map to a Stream in Java
+        Map<Integer,String> studentList = new HashMap<>();
+        studentList.put(1,"Dinesh");
+        studentList.put(2,"Ajaye");
+        studentList.put(3,"Akshay");
+
+        // Convert into stream
+        Stream<Map.Entry<Integer, String>> studentListStream = studentList.entrySet().stream();
+        System.out.println(Arrays.toString(studentListStream.toArray()));
+        // Get only the keys
+        List<Integer> getHashMapKeys = studentList.keySet().stream().collect(Collectors.toList());
+        List<String> getHashMapValues = studentList.values().stream().collect(Collectors.toList());
+        System.out.println("HashMap keys..."+getHashMapValues);
+        System.out.println("HashMap values..."+getHashMapValues);
     }
 }
