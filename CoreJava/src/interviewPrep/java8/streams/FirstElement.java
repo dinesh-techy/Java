@@ -5,10 +5,8 @@
 //Input: Stream = {1, 2, 3, 4, 5, 6, 7}
 //Output: 1
 
-package java8.streams.interview;
+package interviewPrep.java8.streams;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 

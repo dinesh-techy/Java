@@ -1,4 +1,4 @@
-package java8.streams.interview;
+package interviewPrep.java8.streams;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.stream.Stream;
