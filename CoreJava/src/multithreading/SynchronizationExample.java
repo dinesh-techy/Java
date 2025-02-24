@@ -5,7 +5,7 @@ class SharedResource{
     public synchronized void increment(){
         // To simulate the race condition
         try {
-            Thread.sleep(1); // Simulate delay
+            Thread.sleep(10); // Simulate delay
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -42,6 +42,5 @@ public class SynchronizationExample {
             e.printStackTrace();
         }
         System.out.println("Final Count: " + resource.getCount());
-        StringBuffer stringBuffer = new StringBuffer();
     }
 }
