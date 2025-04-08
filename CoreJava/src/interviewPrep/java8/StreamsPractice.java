@@ -93,5 +93,85 @@ public class StreamsPractice {
         List<String> getHashMapValues = studentList.values().stream().collect(Collectors.toList());
         System.out.println("HashMap keys..."+getHashMapValues);
         System.out.println("HashMap values..."+getHashMapValues);
+
+        // Convert [ "hello", "world" ] to uppercase using stream
+        List<String> words = Arrays.asList("hello", "world");
+        System.out.println(words.stream().map(word->word.toUpperCase()).collect(Collectors.toList()));
+
+        // Double numbers in list [1, 2, 3, 4, 5]
+        List<Integer> nums = Arrays.asList(1,2,3,4,5);
+        System.out.println(nums.stream().map(num->num*2).collect(Collectors.toList()));
+
+        // Find longest string in [ "abc", "abcd", "a" ]
+        List<String> words1 = Arrays.asList("abc","abcd","a");
+        System.out.println(words1.stream().max(Comparator.comparingInt(s->s.length())));
+
+        // Sum numbers in [1, 2, 3, 4, 5]
+        System.out.println(nums.stream().mapToInt(x->x).sum());
+
+        // Find distinct numbers in [1, 2, 2, 3, 4, 4]
+        System.out.println(nums.stream().collect(Collectors.toSet()));
+
+        // Sort [4, 2, 7, 1, 3] ascending
+        List<Integer> nums1 = Arrays.asList(4,2,7,1,3);
+        System.out.println(nums1.stream().sorted().collect(Collectors.toList()));
+
+        // Filter out even numbers from [1, 2, 3, 4, 5]
+        System.out.println(nums.stream().filter(x->x%2==0).collect(Collectors.toList()));
+
+        // Find square of each number in [1, 2, 3, 4]
+        System.out.println(nums.stream().map(x->x*x).collect(Collectors.toList()));
+
+        // Join [ "h", "e", "l", "l", "o" ] into a string
+        List<String> letters = Arrays.asList("h","e","l","l","o");
+        System.out.println(letters.stream().collect(Collectors.joining()));
+
+        // Filter out strings containing "a" from ["hello", "cat", "dog", "tiger"]
+        List<String> words2 = Arrays.asList("hello", "cat", "dog", "tiger");
+        System.out.println(words2.stream().filter(word->!word.contains("a")).collect(Collectors.joining()));
+
+        // Find the average of numbers [2, 4, 6, 8, 10]
+        List<Integer> numbers = Arrays.asList(2, 4, 6, 8, 10);
+        System.out.println(numbers.stream().mapToInt(x->x).average());
+        System.out.println(numbers.stream().collect(Collectors.averagingInt(x->x)));
+
+        // Find the longest string in ["apple", "banana", "cat"]
+        List<String> fruits = Arrays.asList("apple", "banana", "cat");
+        System.out.println(fruits.stream().max(Comparator.comparingInt(s->s.length())));
+        System.out.println(fruits.stream().max((a, b) -> a.length() - b.length()).get());
+        System.out.println(fruits.stream().sorted((a, b) -> b.length() - a.length()).findFirst().get());
+
+        // Square each number in [1, 2, 3, 4] and print their sum
+        System.out.println(nums.stream().map(num->num*num).mapToInt(x->x).sum()); // no need of map again
+        System.out.println(nums.stream().mapToInt(num->num*num).sum());
+
+        // Count how many strings in ["hello", "world", "", "java", ""] are empty
+        List<String> words3 = Arrays.asList("hello", "world", "", "java", "");
+        System.out.println(words3.stream().filter(s-> s.length()==0).count());
+        System.out.println(words3.stream().filter(String::isEmpty).count());
+        System.out.println(words3.stream().filter(s -> s.equals("")).count());
+
+        // Find the first string that starts with "j" in ["hello", "world", "java", "apple", "just"]
+        List<String> words4 = Arrays.asList("hello", "world", "java", "apple", "just");
+        System.out.println(words4.stream().filter(word->word.startsWith("j")).findFirst().get());
+
+        // Reverse the order of words in ["hello", "world", "java", "code"]
+
+
+        // Find the total number of characters in all strings in ["hello", "world", "java"]
+        System.out.println(words4.stream().map(s->s.length()).mapToInt(x->x).sum());
+        System.out.println(words4.stream().collect(Collectors.summingInt(String::length)));
+        System.out.println(words4.stream().mapToInt(String::length).sum());
+
+        // Check if all strings in ["hello", "world", "java"] have more than 3 characters
+        System.out.println(words4.stream().allMatch(s->s.length()>3));
+
+        // Find the string that appears most frequently in ["hello", "world", "hello", "java", "hello"]
+        List<String> words5 = Arrays.asList("hello", "world", "hello", "java", "hello");
+
+
+        // Is the list ["a", "b", "c"] sorted alphabetically?
+        List<String> letter = Arrays.asList("a", "b", "c");
+        System.out.println(letter.stream().sorted().collect(Collectors.toList()).equals(letter));
     }
 }
