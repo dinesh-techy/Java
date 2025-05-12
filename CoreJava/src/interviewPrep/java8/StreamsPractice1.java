@@ -109,9 +109,9 @@ public class StreamsPractice1 {
         Employee emp4 = new Employee("Keerthana",40,1000000,"Manager",new ArrayList<>(Arrays.asList("C#","DSA")));
         employeeList.addAll(Arrays.asList(emp1,emp2,emp3,emp4,emp5));
         // Get names of employees in "IT" department.
-        List<String> employeeNames = employeeList.stream().map(Employee::getName).toList();
+        List<String> employeeNames = employeeList.stream().map(Employee::getName).filter(e-> emp1.getDepartment().equals("IT")).toList();
         // Get average salary of employees over 30 years old.
-        Double averageSalary = employeeList.stream().filter(x->x.getAge()>=30).map(Employee::getSalary).reduce(Double::sum).get();
+        Double averageSalary = employeeList.stream().filter(x->x.getAge()>=30).mapToDouble(Employee::getSalary).average().getAsDouble();
         // Find highest paid employee.
         String highPaidEmployee = employeeList.stream().max(Comparator.comparingDouble(Employee::getSalary)).get().name;
         // List distinct departments.
@@ -127,6 +127,10 @@ public class StreamsPractice1 {
         System.out.println("**** Grouping & Partitioning *****");
         // Group employees by department
         Map<String,List<Employee>> empDept = employeeList.stream().collect(Collectors.groupingBy(Employee::getDepartment));
+
+        Map<String, List<String>> empDeptNames = employeeList.stream()
+                .collect(Collectors.groupingBy(Employee::getDepartment,
+                        Collectors.mapping(Employee::getName, Collectors.toList())));
         // Partition employees by age > 30.
         Map<Boolean,List<Employee>> empPart = employeeList.stream().collect(Collectors.partitioningBy(e->e.getAge()>=30));
         // Count employees in each department.
