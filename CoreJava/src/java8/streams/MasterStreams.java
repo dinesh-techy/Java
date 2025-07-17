@@ -1,6 +1,7 @@
 package java8.streams;
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -80,7 +81,7 @@ public class MasterStreams {
         System.out.println("Given a list of integers, multiply each odd number by 2 and skip even numbers...."+multiplyList);
 
         // Convert a list of Employee to list of their names.
-        List<Employee> employeesList = new ArrayList<>(Arrays.asList(new Employee("Dinesha",25),new Employee("Ajaye",24),new Employee("Akila",24)));
+        List<Employee> employeesList = new ArrayList<>(Arrays.asList(new Employee("Dinesha",25,"CSE"),new Employee("Ajaye",24,"IT"),new Employee("Sivashankar",30,"IT"),new Employee("Akila",24,"CSE")));
         List<String> employeeNames = employeesList.stream().map(Employee::getEmpName).toList();
         System.out.println("Convert a list of Employee to list of their names."+employeeNames);
 
@@ -154,6 +155,63 @@ public class MasterStreams {
         System.out.println(joinedList);
 
         // Use Collectors.summarizingInt() to get summary statistics of a list.
+        Double averageEmpAge = employeesList.stream().collect(Collectors.summarizingInt(Employee::getEmpAge)).getAverage();
+        System.out.println("Use Collectors.summarizingInt() to get summary statistics of a list..."+averageEmpAge);
 
+        // Advanced Questions and Interview Favorites
+
+        // Find the second highest number in a list using streams.
+        List<Integer> numberStream = Arrays.asList(1,2,1,3,4,5,6,7,9,7,8,8,9,10);
+        Integer secondHighestNumber = numberStream.stream().sorted(Comparator.reverseOrder()).skip(1).findFirst().get();
+
+        // Return the frequency count of characters in a string using streams.
+        String name = "Keerthana";
+        Map<Character,Integer> freqOfCharacters = name.chars().mapToObj(c ->(char) c).collect(Collectors.groupingBy(Function.identity(),Collectors.summingInt(c -> 1)));
+        System.out.println("Return the frequency count of characters in a string using streams."+freqOfCharacters);
+
+        // Return the first non-repeating character in a string.
+        LinkedHashMap<Character,Long> freqCharacters = name.chars().mapToObj(c->(char)c).collect(Collectors.groupingBy(Function.identity(),LinkedHashMap::new,Collectors.counting()));
+        Character nonRepeatingCharacter =  freqCharacters.entrySet().stream().filter(hm->hm.getValue()==1).findFirst().get().getKey();
+        System.out.println("Return the first non-repeating character in a string."+nonRepeatingCharacter);
+
+        // Return the first repeated character in a string.
+        Character repeatingCharacter = freqCharacters.entrySet().stream().filter(hm->hm.getValue()>1).findFirst().get().getKey();
+        System.out.println("Return the first repeated character in a string..."+repeatingCharacter);
+
+        // Remove duplicate characters from a string using streams
+        String uniqueString = name.chars().mapToObj(c->(char)c).collect(Collectors.groupingBy(Function.identity(),LinkedHashMap::new,Collectors.counting()))
+                .entrySet().stream().map(s->String.valueOf(s.getKey())).collect(Collectors.joining());
+        System.out.println("Remove duplicate characters from a string using streams..."+uniqueString);
+
+        // Sort a map by its values using streams.
+        LinkedHashMap<Character,Integer> sortMap = new LinkedHashMap<>();
+        sortMap.put('C',2);
+        sortMap.put('A',1);
+        sortMap.put('D',0);
+        sortMap.put('E',5);
+
+        Map<Character,Integer> sortedMap = sortMap.entrySet().stream().sorted(Map.Entry.comparingByValue()).collect(Collectors.toMap(Map.Entry::getKey,Map.Entry::getValue,(e1,e2)->1,LinkedHashMap::new));
+        System.out.println("Sort a map by its values using streams.."+sortedMap);
+
+        // Group employees by department using Collectors.groupingBy()
+        Map<String,List<Employee>> groupedEmployee = employeesList.stream().collect(Collectors.groupingBy(Employee::getDepartment));
+        System.out.println("Group employees by department using Collectors.groupingBy()..."+groupedEmployee);
+
+        // Sort a list of Employee objects by age descending.
+        List<Employee> sortedEmployeeByAge = employeesList.stream().sorted(Comparator.comparing(Employee::getEmpAge).reversed()).toList();
+        System.out.println("Sort a list of Employee objects by salary descending..."+sortedEmployeeByAge);
+
+        // Find the highest age employee in each department.
+        Map<String,Employee> highestAgeEmp = employeesList.stream().collect(Collectors.groupingBy(e->e.getDepartment(),Collectors.collectingAndThen(
+                Collectors.maxBy(Comparator.comparingDouble(e->e.getEmpAge())),
+                Optional::get
+        )));
+        System.out.println("Find the highest age employee in each department..."+highestAgeEmp);
+
+        // 	Find duplicate elements in a list using streams.
+        List<String> animalsList = new ArrayList<>(Arrays.asList("dog","cat","cow","cat","dog","lion"));
+        HashSet<String> uniqueAnimals = new HashSet<>();
+        List<String> duplicateAnimals = animalsList.stream().filter(animal -> !uniqueAnimals.add(animal)).collect(Collectors.toList());
+        System.out.println("Find duplicate elements in a list using streams."+duplicateAnimals);
     }
 }

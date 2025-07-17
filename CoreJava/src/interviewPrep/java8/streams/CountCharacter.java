@@ -19,6 +19,7 @@ public class CountCharacter {
         // Count of each character
         String str = "advocate";
         Map<Character,Integer> countOfEachCharacter = new HashMap<>();
+        Map<Character,Integer> countOfEachCharacter2 = new HashMap<>();
         str.chars().forEach(character ->{
             countOfEachCharacter.put((char) character,countOfEachCharacter.getOrDefault((char)character,0)+1);
         });
